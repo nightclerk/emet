@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data: blob:; media-src 'self' blob: mediastream:; font-src 'self'; worker-src 'self' blob:; connect-src 'self'">
+  <title>Emet</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="mock-banner" class="mock" hidden>Test mode: scripted signals, no camera, no SDK.</div>
+
+  <!-- First run: the Presage key, stored on this computer only -->
+  <section data-screen="key" class="card" hidden>
+    <h1 class="title"><span class="he" lang="he">אמת</span> Emet</h1>
+    <p>The golem is shaped by Presage SmartSpectra, which reads pulse and breathing from a camera. It needs a free developer key from <span class="mono">physiology.presagetech.com</span>.</p>
+    <form id="key-form">
+      <label for="key-input" class="small">Your Presage API key</label>
+      <input id="key-input" type="password" autocomplete="off" spellcheck="false">
+      <button class="btn" type="submit">Keep it on this computer</button>
+    </form>
+    <p class="small note">The key is saved in this app's local storage on this computer and sent only to Presage, to check it.</p>
+  </section>
+
+  <!-- Before anything: the legend, and what the camera is used for -->
+  <section data-screen="intro" class="card" hidden>
+    <h1 class="title"><span class="he" lang="he">אמת</span> Emet</h1>
+    <p class="lede">In Prague, the story goes, Rabbi Loew shaped a man from river clay and wrote <span class="he" lang="he">אמת</span>, <em>truth</em>, on its forehead. Erase the first letter and it reads <span class="he" lang="he">מת</span>, <em>dead</em>, and the clay is only clay again.</p>
+    <p>This golem is shaped from you. It breathes when you breathe, its heart glows with your pulse, and its face follows yours. The <span class="he" lang="he">א</span> on its forehead holds only while you stay calm.</p>
+    <details open class="consent">
+      <summary>What happens when you wake it</summary>
+      <ul>
+        <li>Your camera (or a video file you choose) is read frame by frame <strong>on this computer</strong> by the Presage SDK. Nothing is recorded or saved, and the golem never shows your face.</li>
+        <li>The only network traffic is the SDK checking your Presage key. Anonymous SDK diagnostics are <strong>off</strong> unless you turn them on below.</li>
+        <li>"Calm" here is a playful comparison with your own first minute, not a measurement of health. This is not a medical device.</li>
+        <li>Stop at any time with <em>Return to clay</em>: the camera turns off and every reading is dropped.</li>
+      </ul>
+      <label class="small check"><input id="telemetry" type="checkbox"> Send Presage anonymous SDK diagnostics (session summaries, no video, no vital signs)</label>
+    </details>
+    <div class="actions">
+      <button class="btn" id="use-camera">Wake it with my camera</button>
+      <button class="btn ghost" id="use-file">Use a video file</button>
+      <input id="file-input" type="file" accept="video/*" hidden>
+    </div>
+    <p class="small note">Use only video of someone who has agreed to it. <button id="forget-key" class="link small">Forget my key</button></p>
+  </section>
+
+  <!-- The golem -->
+  <section data-screen="live" class="live" hidden>
+    <header class="bar">
+      <span class="title small-title"><span class="he" lang="he">אמת</span> Emet</span>
+      <button class="btn ghost" id="stop">Return to clay</button>
+    </header>
+    <div class="room">
+      <aside class="readings" aria-label="How the golem reads you">
+        <h2 class="small caps">How it reads you</h2>
+        <div class="row" id="r-pulse"><span class="label"></span><span class="value"></span><span class="conf"></span><span class="pull"><i></i></span></div>
+        <div class="row" id="r-breath"><span class="label"></span><span class="value"></span><span class="conf"></span><span class="pull"><i></i></span></div>
+        <div class="row" id="r-hrv"><span class="label"></span><span class="value"></span><span class="conf"></span><span class="pull"><i></i></span></div>
+        <div class="row" id="r-eda"><span class="label"></span><span class="value"></span><span class="conf"></span><span class="pull"><i></i></span></div>
+        <p class="small note">Bars pull right when a signal is calmer than your own first minute, left when it is more tense.</p>
+        <div class="calm"><span class="small caps">Calm</span> <span id="calm-value" class="mono">–</span></div>
+        <figure class="mesh"><canvas id="mesh" width="200" height="150"></canvas><figcaption class="small note">What the golem sees of you: 478 points, never a picture.</figcaption></figure>
+      </aside>
+      <div id="stage" class="stage"></div>
+      <div class="aleph-col" aria-hidden="true"><span class="he" lang="he">א</span><div class="meter"><i id="aleph-meter"></i></div></div>
+    </div>
+    <div id="shaping" class="shaping"><span class="small caps">Shaping the clay</span><div class="track"><i id="shaping-bar"></i></div><span id="shaping-left" class="mono small"></span></div>
+    <p id="words" class="words" aria-live="polite"></p>
+    <video id="cam-video" muted playsinline hidden></video>
+    <video id="file-video" muted playsinline hidden></video>
+  </section>
+
+  <div id="error" class="error" hidden><p id="error-text"></p><button class="btn ghost" id="error-back">Back</button></div>
+
+  <script src="dist/renderer.bundle.js"></script>
+</body>
+</html>

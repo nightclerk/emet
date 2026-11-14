@@ -1,0 +1,24 @@
+{
+  "name": "emet-golem",
+  "version": "1.0.0",
+  "description": "Emet: a clay golem that lives only while you stay calm. Built on Presage SmartSpectra.",
+  "main": "main.js",
+  "scripts": {
+    "build": "esbuild src/renderer.js --bundle --outfile=dist/renderer.bundle.js --platform=browser --format=iife --log-level=warning",
+    "start": "npm run build && electron .",
+    "mock": "npm run build && electron . --mock",
+    "diag": "npm run build && electron . --diag",
+    "test": "node --test test/*.test.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@smartspectra/node-sdk": "^3.5.0"
+  },
+  "devDependencies": {
+    "electron": "^43.8.1",
+    "esbuild": "^0.25.12"
+  },
+  "private": true
+}
