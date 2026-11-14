@@ -237,3 +237,5 @@ $('use-file').addEventListener('click', () => $('file-input').click());
 $('file-input').addEventListener('change', (e) => { const f = e.target.files[0]; e.target.value = ''; if (f) begin({ file: f }); });
 
 show(getKey() || MOCK ? 'intro' : 'key');
+// --diag runs hands-free: wake with the camera as soon as a key is present.
+if (DIAG && getKey()) setTimeout(() => begin({ camera: true }), 1500);
