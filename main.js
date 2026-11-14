@@ -45,6 +45,7 @@ function createWindow() {
   }
   const query = process.argv.includes('--mock') ? { mock: '1' } : process.argv.includes('--diag') ? { diag: '1' } : undefined;
   // --diag: print the page's [diag] lines to this terminal (presence and confidence only, never values).
+  if (query?.diag) setTimeout(() => { process.stdout.write('[diag] closing after 150 s\n'); app.quit(); }, 150000);
   if (query?.diag) win.webContents.on('console-message', (_e, _level, message) => { if (String(message).startsWith('[diag]')) process.stdout.write(message + '\n'); });
   win.loadFile(path.join(__dirname, 'index.html'), query ? { query } : undefined);
 }
